@@ -1,2 +1,6 @@
+__pycache__
 *.DS_Store
 **/myvenv/*
+abcmeta_test/
+config.py
+twitter/＊.csv
