@@ -1,5 +1,5 @@
 from requests_oauthlib import OAuth1Session
-import json, config, time, datetime, re, csv, sys
+import json, config, time, datetime, re, csv, sys, traceback
 
 # KEY周り
 CONSUMER_KEY = config.CONSUMER_KEY
@@ -19,7 +19,7 @@ def getTweetData(search_word, max_id, since_id):
     # pamams settings
     params = {
         'q':search_word,
-        'count':'50',
+        'count':'200',
     }
 
     if max_id != -1:
@@ -63,7 +63,7 @@ while(True):
     try:
         count = count +1
         sys.stdout.write("%d, "% count)
-        kw = u'リノべる'
+        kw = u'リノベーション'
 
         res = getTweetData(kw, max_id=mid, since_id=sid)
 
@@ -81,11 +81,13 @@ while(True):
         else:
             if len(res['statuses'])==0:
                 sys.stdout.write("statuses is none. ")
+                break
             elif 'next_results' in res['metadata']:
                 print('is_next_results')
-                with open("tweet_" + kw +".csv", "a") as f:
+                with open("tweet(kw_" + kw +").csv", "a") as f:
+                    writer = csv.writer(f)
                     for i in range(len(res['statuses'])):
-                        f.write(res['statuses'][i]['text'] + "\n")
+                        writer.writerow([res['statuses'][i]['text'], res['statuses'][i]['created_at']])
                 next_url = res['metadata']['next_results']
                 pattern = r".*max_id=([0-9]*)\&.*"
                 ite = re.finditer(pattern, next_url)
@@ -95,5 +97,9 @@ while(True):
             else:
                 sys.stdout.write("next is none. finished.")
                 break
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
+        traceback.format_exc(sys.exc_info()[2])
+        raise
     finally:
         sys.exc_info()

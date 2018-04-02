@@ -45,9 +45,10 @@ text = ' '.join(words)
 #word cloud
 fpath = "~/Library/Fonts/ヒラギノ丸ゴ ProN W4.ttc"
 
-stop_words = [u'RT', u'屠殺', u'これ', u'さん',u'廃墟']
+stop_words = [u'RT', u'屠殺', u'これ', u'さん',u'廃墟',u'招待コード',u'招待',u'コード',u'メルカリ',u'メルカリ アッテ',u'アッテ',u'メルカリアッテ', u'YJNQTQ HFBNURWG']
 
 wordcloud = WordCloud(background_color="white", font_path=fpath, width=900, height=500, stopwords=set(stop_words)).generate(text)
+file_name = file.split('.csv')[0]
 
 print('successes')
 
@@ -55,4 +56,4 @@ plt.figure(figsize=(15,12))
 plt.imshow(wordcloud)
 plt.axis("off")
 # plt.show()
-plt.savefig(file + ".png")
+plt.savefig(file_name + ".png")

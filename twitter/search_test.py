@@ -25,9 +25,14 @@ if req.status_code == 200:
     search_timeline = json.loads(req.text)
 
     for tweet in search_timeline['statuses']:
-        print('>>　' + tweet['text'])
+        print('>>　' + "\n"
+              + 'created_at:' + tweet['created_at'] + "\n"
+              + 'user_id:' + str(tweet['user']['id']) + "\n"
+              + 'user_name:' + str(tweet['user']['name']) + "\n"
+              + 'tweet:' + tweet['text'])
 else:
     print("Error: %d" % req.status_code)
+
 
 
 
