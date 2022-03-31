@@ -1,0 +1,12 @@
+# バイナリで読込、BOMを除去して「UTF-16LE」としてデコード
+with open(URL + '/input/nps_20211202.csv', 'rb') as f:
+    data = f.read()
+    text = data[len(codecs.BOM_UTF16_LE):].decode('utf-16le') 
+
+# colmunを設定
+col_names =  [ 'c{0:02d}'.format(i) for i in range(25) ]
+df = pd.read_table(StringIO(text), names=col_names, header=2)
+
+df = df[["c07","c19", "c20", "c21", "c22", "c23"]].copy()
+df = df.rename(columns={'c07': 'created_at','c19': 'point', 'c20': 'point_reason', 'c21': 'purchase_reason', 'c22': 'instead_food', 'c23': 'email'})
+df.head(1)
